@@ -56,26 +56,15 @@
    * PostMan Requests
      
          * GetMapping  - /momentum/active-store/v1/all/products
-                 ![img.png](getAllproducts.png)
-    
+                 http://localhost:8081/momentum/active-store/v1/all/products/
+                
          *  GetMapping - /momentum/active-store/v1/customer/{id}
-                ![img_1.png](getCustomerById.png) 
-    
-         *   GetMapping - /momentum/active-store/v1/purchase/products/ByIds
-                ![img.png](img.png)
+              http://localhost:8081/momentum/active-store/v1/customer/1  
+            
+         *  GetMapping - /momentum/active-store/v1/purchase/products/ByIds
+               http://localhost:8081/momentum/active-store/v1/purchase/products/ByIds/?ids=1,2
 
-   * Swagger-UI Requests
-     
-         *   GetMapping  - /momentum/active-store/v1/all/products
-     
-               ![img.png](img.png)
-    
-         *   GetMapping - /momentum/active-store/v1/customer/{id}
-                ![img.png](img.png)![img_1.png](getCustomerById.png) 
-
-         *   GetMapping - /momentum/active-store/v1/purchase/products/ByIds
-            ![img.png](imgs/Swagger-purchaseUsingProductId.png)
-
+   
    *  Swagger-UI  
         
         * After starting up the container swagger is found on the link below
@@ -86,3 +75,7 @@
     
        ![img.png](imgs/DockerComposeStartingApplication.png)
         The container is configured to be accessible in momentum-networ with port 8081
+     
+   * Data and database
+        * schame.sql is added in src/resources to creating database and table during applicaion start up
+        * data.slq is added to populate database during application start up
