@@ -4,13 +4,17 @@ import com.active.store.data.Customer;
 import com.active.store.data.Product;
 import com.active.store.exceptions.CustomerNotFoundException;
 import com.active.store.exceptions.InSufficientActivePointsException;
+import com.active.store.exceptions.InternalServerException;
 import com.active.store.exceptions.ProductNotFoundException;
 import com.active.store.repositories.CustomerRepository;
 import com.active.store.repositories.ProductRepository;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +39,7 @@ public class ActiveStoreService {
     }
 
     /* get all products */
+    @Timed(value = "RETRIEVE ALL PRODUCTS", description = "time taken to read all products in db")
     public List<Product> getAllProducts(){
         return productRepository.findAll();
     }
@@ -56,7 +61,7 @@ public class ActiveStoreService {
     }
 
     /* Check if product exists from the request list */
-    public int customerActivePointsAfterPurchase(List<Long> ids, Pageable pageable) throws InSufficientActivePointsException,ProductNotFoundException{
+    public int customerActivePointsAfterPurchase(List<Long> ids, Pageable pageable) throws InSufficientActivePointsException,ProductNotFoundException,InternalServerException{
         Page<Product> productPage = productRepository.findByIdIn(ids,pageable);
         productList = productPage.getContent();
         calculateAcivePoints();
@@ -64,8 +69,9 @@ public class ActiveStoreService {
     }
 
     /*Sum of customer points when ordering */
-    public void calculateAcivePoints(){
+    public void calculateAcivePoints() throws InternalServerException{
 
+        isCustomerIdProvided();
         activePoints = customer.getActivePoints();
         customerId = customer.getId();
         sumOfActivePoints = sumOfProductActivePoints(productList);
@@ -94,6 +100,13 @@ public class ActiveStoreService {
         customerUpdate.setActivePoints(activePoints);
         log.debug ("customerUpdate is " + customerUpdate);
         return customerRepository.save(customerUpdate);
+    }
+
+    public boolean isCustomerIdProvided() throws InternalServerException {
+        if(customerId == 0){
+            throw new InternalServerException ("Please provide use the findCustomerById before ordering");
+        }
+        return true;
     }
 
 }

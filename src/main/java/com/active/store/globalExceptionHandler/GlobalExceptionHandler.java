@@ -3,6 +3,7 @@ package com.active.store.globalExceptionHandler;
 import com.active.store.customErrorMessage.CustomErrorMessage;
 import com.active.store.exceptions.CustomerNotFoundException;
 import com.active.store.exceptions.InSufficientActivePointsException;
+import com.active.store.exceptions.InternalServerException;
 import com.active.store.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,16 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(InSufficientActivePointsException.class)
-    public ResponseEntity<?>inSuffientActivePointsException(InSufficientActivePointsException exception, WebRequest request,HttpStatus httpStatus){
-        CustomErrorMessage errorMessage = new CustomErrorMessage(new Date(), httpStatus.NOT_FOUND, exception.getMessage(),request.getDescription (false));
+    public ResponseEntity<?>inSuffientActivePointsException(InSufficientActivePointsException inSufficientActivePointsException, WebRequest request,HttpStatus httpStatus){
+        CustomErrorMessage errorMessage = new CustomErrorMessage(new Date(), httpStatus.NOT_FOUND, inSufficientActivePointsException.getMessage(),request.getDescription (false));
         return new ResponseEntity<> (errorMessage,HttpStatus.FORBIDDEN);
+    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity internalServerException(InternalServerException internalServerException,WebRequest request,HttpStatus httpStatus){
+        CustomErrorMessage errorMessage = new CustomErrorMessage(new Date(), httpStatus.NOT_FOUND, internalServerException.getMessage(),request.getDescription (false));
+
+        return new ResponseEntity (errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 }

@@ -9,6 +9,6 @@ global:
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'momentum-active-points-app_metrics'
-    metrics_path: 'http://momentum-active-points-app:8081/actuator/prometheus'
+    metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['momentum-active-points-app:8081']

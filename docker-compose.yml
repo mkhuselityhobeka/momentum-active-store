@@ -7,11 +7,12 @@ services:
       dockerfile: Dockerfile
     image: momentum-active-points-app
     depends_on:
-      - prometheus
+       - prometheus
     ports:
         - "8081:8081"
     hostname: momentum-active-points-app
-
+    networks:
+      - momentum-network
   prometheus:
     image: prom/prometheus
     ports:
@@ -19,4 +20,8 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     hostname: prometheus
-
+    networks:
+      - momentum-network
+networks:
+  momentum-network:
+    driver: bridge
