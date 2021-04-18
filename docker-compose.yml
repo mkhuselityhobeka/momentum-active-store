@@ -1,0 +1,29 @@
+version: '3'
+services:
+  discovery-app:
+    container_name: momentum-active-pionts-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: momentum-active-store:latest
+    ports:
+      - 8081:8081
+    hostname: momentum-app
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    hostname: prometheus
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    hostname: grafana
