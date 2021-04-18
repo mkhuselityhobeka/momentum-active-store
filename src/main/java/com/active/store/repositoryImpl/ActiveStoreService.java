@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +71,7 @@ public class ActiveStoreService {
 
         isCustomerIdProvided();
         activePoints = customer.getActivePoints();
-        customerId = customer.getId();
+
         sumOfActivePoints = sumOfProductActivePoints(productList);
         if(activePoints >= sumOfActivePoints){
             activePoints = activePoints - sumOfActivePoints;
@@ -103,8 +101,9 @@ public class ActiveStoreService {
     }
 
     public boolean isCustomerIdProvided() throws InternalServerException {
+        customerId = customer.getId();
         if(customerId == 0){
-            throw new InternalServerException ("Please provide use the findCustomerById before ordering");
+            throw new InternalServerException ("Please  use the findCustomerById before ordering");
         }
         return true;
     }

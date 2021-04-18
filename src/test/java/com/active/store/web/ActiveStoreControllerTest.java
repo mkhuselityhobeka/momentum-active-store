@@ -51,7 +51,7 @@ class ActiveStoreControllerTest {
         list.add (2L);
         long id=1;
         String url = "http://localhost:"+port+
-                "/momentum/active-store/v1/products?"+list+"?"+1+"?"+1;
+                "/momentum/active-store/v1/purchase/products/ByIds?="+list+"&="+0+"&=0&"+0+"&=id";
         ResponseEntity <Object>responseEntity = testRestTemplate.getForEntity (url, Object.class);
         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
     }

@@ -48,7 +48,7 @@ public class ActiveStoreController {
 
     /*Calculate customer active points after order and update database*/
     @Operation(summary = "Return number of customer active points after purchase")
-    @GetMapping(value = "/products",params = "ids")
+    @GetMapping(value = "/purchase/products/ByIds",params = "ids")
     public ResponseEntity<Integer>returnCustomerRemainingPoints(@RequestParam List<Long> ids, Pageable pageable){
         return new ResponseEntity<> (activeStoreService.customerActivePointsAfterPurchase(ids,pageable),HttpStatus.OK);
     }
